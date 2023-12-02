@@ -1,0 +1,24 @@
+form {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%
+}
+
+body {
+    background-color: #3fd9d1;
+    font-family: "Montserrat";
+    font-size: 1rem;
+    line-height: 1.2;
+    margin: 0;
+    text-align: center;
+}
+
+.header {
+    background-color:#13d490;
+    color: #fafffd;
+}
+
+h1 {
+    text-align: center;
+}
