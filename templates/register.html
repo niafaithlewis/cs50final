@@ -1,0 +1,38 @@
+{% from "navbar.html" import nav_bar %}
+
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet" />
+
+    </head>
+</body>
+    <div class="parent">
+        <div class="header">
+            {{ nav_bar() }}
+        <h1>Welcome to BioBoss</h1>
+        </div>
+    </div>
+    <form action="/register" method="POST">
+        <h3>
+            Register
+        </h3>
+        <div class="form-group">
+            <input name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input name="password" placeholder="Password" type="password">
+        </div>
+        <div class="form-group">
+            <input name="confirmation" placeholder="Please Confirm Password" type="password">
+        </div>
+    <button class="btn btn-primary" type="submit">Register</button>
+    <h4>
+        (not a first time user? <a href="/login">Log In</a> )
+    </h4>
+    </form>
+
+</html>
