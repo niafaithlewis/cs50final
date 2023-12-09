@@ -19,9 +19,93 @@ def index():
     return render_template("index.html")
 
 def get_db_connection():
-    conn =sqlite3.connect('bioboss_db.sqlite')
+    conn =sqlite3.connect('bioboss.db')
     conn.row_factory = sqlite3.Row
     return conn
+
+def get_quiz_by_id(quiz_id):
+    try:
+        db = get_db_connection()
+        query = """
+            SELECT
+                quizzes.quiz_id,
+                quizzes.topic,
+                quizzes.description,
+                questions.question_id,
+                questions.question_text,
+                answers.answer_id,
+                answers.answer_text,
+                answers.is_correct
+            FROM
+                quizzes
+            JOIN
+                questions ON quizzes.quiz_id = questions.quiz_id
+            JOIN
+                answers ON questions.question_id = answers.question_id
+            WHERE
+                quizzes.quiz_id = ?
+            ORDER BY
+                questions.question_id
+        """
+        rows = db.execute(query, (quiz_id,)).fetchall()
+
+        # Organize data into a dictionary
+        quiz = {
+            'topic': None,
+            'description': None,
+            'questions': []
+        }
+
+        current_question = None
+
+        for row in rows:
+            quiz_id, topic, description, question_id, question_text, answer_id, answer_text, is_correct = row
+
+            if quiz['topic'] is None:
+                quiz['topic'] = topic
+                quiz['description'] = description
+
+            # If this is a new question, create a new question dictionary and append it to the quiz
+            if not current_question or current_question['question_id'] != question_id:
+                current_question = {
+                    'question_id': question_id,
+                    'question_text': question_text,
+                    'answers': []
+                }
+                quiz['questions'].append(current_question)
+
+            # Create a new answer dictionary and append it to the current question's answers
+            answer = {
+                'answer_id': answer_id,
+                'answer_text': answer_text,
+                'is_correct': is_correct
+            }
+            current_question['answers'].append(answer)
+
+        db.close()
+        return quiz
+    except sqlite3.Error as e:
+        print("Error fetching quiz with ID {quiz_id}: {e}")
+        return None
+
+
+# Displaying quiz page
+@app.route("/quiz/<int:quiz_id>")
+def quiz_page(quiz_id):
+    # Get details from the database based on quiz_id
+    quiz = get_quiz_by_id(quiz_id)
+    if quiz:
+        return render_template("quiz_page.html", quiz=quiz)
+    else:
+        return "Quiz not found."
+
+#Tracking User's Score
+
+# Retrieving correct answers
+
+
+#Calculating user's score
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -40,7 +124,7 @@ def register():
 
         try:
             db =get_db_connection()
-            db.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)"), (username, username, hash_pass)
+            db.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hash_pass))
             db.commit()
         except sqlite3.IntegrityError:
             flash("Username already taken")
@@ -78,10 +162,41 @@ def login():
     else:
         return render_template("login.html")
 
+@app.route("/quiz")
+def quiz():
+    return render_template("quiz.html")
+
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
