@@ -14,33 +14,102 @@ body {
     text-align: center;
 }
 
-.header {
+  .header {
     background-color: #09b860;
     color: #fafffd;
-}
-
-h1 {
-    text-align: center;
-}
-
-ul li {
-    display: inline-block;
   }
 
-  a:link, a:visited {
+h1 {
+    text-align: center !important;
+}
+
+ul.nav.nav-tabs li.nav-item {
+    display: inline-block !important;
+  }
+
+ul.nav.nav-tabs li.nav-item a.nav-link:link,
+ul.nav.nav-tabs li.nav-item a.nav-link:visited {
     background-color: #09b860;
     color: white;
     padding: 10px 15px;
     border-radius: 12px;
 
-    text-align: center;
+    text-align: center !important;
     text-decoration: none;
-    display: inline-block;
+    display: inline-block !important;
   }
 
-  a:hover {
+ul.nav.nav-tabs li.nav-item a.nav-link:hover {
     background-color: #09b860;
     color: white;
     border: 1px solid #ffffff;
 
+  }
+
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .quiz-module {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #09b860;
+    padding: 20px;
+    border-radius: 1px;
+    text-align: center;
+  }
+
+  .responsive-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .flip-card {
+    position: relative;
+    background-color: transparent;
+    width: 100%;
+    height: 250px;
+    border: 1px solid #f1f1f1;
+    perspective: 1000px;
+    margin: 0 auto;
+  }
+
+
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-color: #3fd9d1;
+  }
+
+  .flip-card-front {
+    background-color: #bbb;
+    color: black;
+  }
+
+
+  .flip-card-back {
+    background-color: #09b860;
+    color: white;
+    transform: rotateY(180deg);
   }
