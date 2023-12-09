@@ -1,0 +1,72 @@
+{% from "navbar.html" import nav_bar %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioBoss</title>
+
+    <!--Link to our stylesheet -->
+    <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet" />
+
+
+</head>
+<body>
+     <div class="parent">
+        <div class="header">
+            {{ nav_bar() }}
+           <h1>Quizzes</h1>
+        </div>
+    </div>
+    <h4>Choose from a variety of topics to test your Biology knowledge or to learn some cool facts!</h4>
+    <h5>Click/Hover over each card to see the topics included in each module</h5>
+
+    <!--Flip card info from Bootstrap code-->
+
+    <div class="quiz-grid">
+        <div class="quiz-module">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="pollen.jpg" class="responsive-image">
+                    </div>
+                    <div class="flip-card-back">
+                        <p>
+                            Plant Structure
+                        </p>
+                        <p>
+                            Photosynthesis
+                        </p>
+                        <p>
+                            Cellular Respiration
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ url_for('quiz_page', quiz_id=1) }}">Geology Quiz!</a>
+        </div>
+        <div class="quiz-module">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="pollen.jpg" class="responsive-image">
+                    </div>
+                    <div class="flip-card-back">
+                        <p>
+                            Plant Structure
+                        </p>
+                        <p>
+                            Photosynthesis
+                        </p>
+                        <p>
+                            Cellular Respiration
+                        </p>
+                    </div>
+                </div>
+                <a href="{{ url_for('quiz_page', quiz_id=2) }}">Genetics Quiz!</a>
+            </div>
+        </div>
+    </div>
+
+</body>
