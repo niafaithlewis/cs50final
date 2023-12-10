@@ -1,38 +1,42 @@
 {% from "navbar.html" import nav_bar %}
 
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet" />
-
-    </head>
-</body>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet" />
+    <title>BioBoss - Register</title>
+</head>
+<body>
     <div class="parent">
         <div class="header">
             {{ nav_bar() }}
-        <h1>Welcome to BioBoss</h1>
+            <h1>Welcome to BioBoss</h1>
         </div>
     </div>
     <form action="/register" method="POST">
-        <h3>
-            Register
-        </h3>
+        <h3>Register</h3>
         <div class="form-group">
-            <input name="username" placeholder="Username" type="text">
+            <input name="username" placeholder="Username" type="text" required>
         </div>
         <div class="form-group">
-            <input name="password" placeholder="Password" type="password">
+            <input name="password" placeholder="Password" type="password" required>
         </div>
         <div class="form-group">
-            <input name="confirmation" placeholder="Please Confirm Password" type="password">
+            <input name="confirmation" placeholder="Please Confirm Password" type="password" required>
         </div>
-    <button class="btn btn-primary" type="submit">Register</button>
-    <h4>
-        (not a first time user? <a href="/login">Log In</a> )
-    </h4>
+        <button class="btn btn-primary" type="submit">Register</button>
+        <h4>(not a first time user? <a href="/login">Log In</a>)</h4>
     </form>
 
+    <script>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            alert("{{ messages[0] }}");
+          {% endif %}
+        {% endwith %}
+    </script>
+</body>
 </html>

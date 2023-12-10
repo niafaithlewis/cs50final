@@ -1,0 +1,39 @@
+{% from "navbar.html" import nav_bar %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - BioBoss</title>
+    <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet" />
+</head>
+<body>
+    <div class="parent">
+        <div class="header">
+            {{ nav_bar() }}
+            <h1>Our Top Scoring BioBosses</h1>
+        </div>
+        <div class="content">
+            <table class="scoreboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Username</th>
+                        <th>Cumulative Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.cumulative_score }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

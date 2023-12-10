@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Results</title>
@@ -14,7 +15,7 @@
             <h1>Quiz Results</h1>
         </div>
         <div class="content">
-            <h2>{{ user_id }}'s Score: {{ score }}</h2>
+            <h2>Your Score: {{ score }}</h2>
             <h3>Details:</h3>
             <ul>
                 {% for result in results %}

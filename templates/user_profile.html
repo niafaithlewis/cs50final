@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet" />
@@ -11,12 +12,26 @@
     <div class="parent">
         <div class="header">
             {{ nav_bar() }}
-            <h1>User Profile</h1>
+            <h1>Your Profile</h1>
         </div>
         <div class="content">
-            <h3>Username: {{ user.username }}</h3>
-            <p>Cumulative Score: {{ user.cumulative_score }}</p>
-            <!-- Add more user details here -->
+            <!-- Profile Picture -->
+            <img src="{{ url_for('static', filename='profile_pics/' + user.profile_pic) if user.profile_pic else url_for('static', filename='profile_pics/default.jpg') }}" alt="Profile Picture" class="profile-picture">
+
+            <!-- Form to upload a new profile picture -->
+            <form action="{{ url_for('update_profile_pic') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="profile_pic">
+                <button type="submit">Upload New Picture</button>
+            </form>
+
+            <!-- User Information -->
+            <div class="user-info">
+                <p>{{ user.username }}</p>
+                <p>Your total score: {{ user.cumulative_score }}</p>
+            </div>
+
+            <!-- Link to Change Password Page -->
+            <p><a href="{{ url_for('change_password') }}">Change Password</a></p>
         </div>
     </div>
 </body>

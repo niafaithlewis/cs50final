@@ -1,0 +1,33 @@
+{% from "navbar.html" import nav_bar %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet" />
+    <title>Quiz Results</title>
+</head>
+<body>
+    <div class="parent">
+        <div class="header">
+            {{ nav_bar() }}
+            <h1>Quiz Results</h1>
+        </div>
+        <div class="content">
+            <h2>Your Score: {{ score }}</h2>
+            <div class="quiz-results">
+                {% for question_id, user_response in user_responses.items() %}
+                    <div class="question">
+                        <h3>{{ user_response.question_text }}</h3>
+                        <p>Your Answer: {{ user_response.user_answer }} - {% if user_response.is_correct %}<span class="correct-answer">Correct</span>{% else %}<span class="incorrect-answer">Incorrect</span>{% endif %}</p>
+                        <p>Correct Answer: {{ correct_answers[question_id].answer_text }}</p>
+                        <p>Explanation: {{ correct_answers[question_id].explanation }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <a href="/quiz">Try another quiz</a>
+        </div>
+    </div>
+</body>
+</html>

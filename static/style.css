@@ -1,31 +1,37 @@
-form {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%
-}
+/* Importing Google Font: Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-body {
+/* Global Styles */
+body, html {
+    font-family: 'Roboto', sans-serif;
     background-color: #3fd9d1;
-    font-family: "Montserrat";
     font-size: 1rem;
     line-height: 1.2;
     margin: 0;
     text-align: center;
 }
 
-  .header {
-    background-color: #09b860;
-    color: #fafffd;
-  }
-
-h1 {
-    text-align: center !important;
+/* Navigation Bar Styling */
+.navbar, .nav, .nav-link {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700; /* For a bolder look on navigation items */
 }
 
+/* Header Styling */
+.header {
+    background-color: #09b860;
+    color: #fafffd;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+
+/* Navigation Tabs Styling */
 ul.nav.nav-tabs li.nav-item {
     display: inline-block !important;
-  }
+}
 
 ul.nav.nav-tabs li.nav-item a.nav-link:link,
 ul.nav.nav-tabs li.nav-item a.nav-link:visited {
@@ -33,27 +39,59 @@ ul.nav.nav-tabs li.nav-item a.nav-link:visited {
     color: white;
     padding: 10px 15px;
     border-radius: 12px;
-
     text-align: center !important;
     text-decoration: none;
     display: inline-block !important;
-  }
+}
 
 ul.nav.nav-tabs li.nav-item a.nav-link:hover {
     background-color: #09b860;
     color: white;
     border: 1px solid #ffffff;
+}
 
-  }
+/* Scoreboard Table Styling */
+.scoreboard-table {
+    margin: 0 auto; /* Centers the table */
+    width: 80%; /* Adjust width as needed */
+    background-color: #fafffd; /* Background color */
+    border-collapse: collapse; /* For neater border handling */
+    border: 1px solid #ddd; /* Border color */
+}
 
-  .quiz-grid {
+.scoreboard-table thead {
+    background-color: #09b860; /* Header background to match the theme */
+    color: white;
+}
+
+.scoreboard-table th, .scoreboard-table td {
+    padding: 10px; /* Spacing within cells */
+}
+
+.scoreboard-table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2; /* Zebra striping for rows */
+}
+
+.scoreboard-table tbody tr:hover {
+    background-color: #ddd; /* Hover effect for rows */
+}
+
+.scoreboard-table td {
+    text-align: center; /* Centering text in cells */
+}
+
+/* Remaining Styles */
+/* Add other styles from your existing CSS here, if any */
+
+/* Quiz Grid Styling */
+.quiz-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     padding: 20px;
-  }
+}
 
-  .quiz-module {
+.quiz-module {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,14 +100,16 @@ ul.nav.nav-tabs li.nav-item a.nav-link:hover {
     padding: 20px;
     border-radius: 5px;
     text-align: center;
-  }
+}
 
-  .responsive-image {
+/* Image Responsive Styling */
+.responsive-image {
     width: 100%;
     height: 100%;
-  }
+}
 
-  .flip-card {
+/* Flip Card Styling */
+.flip-card {
     position: relative;
     background-color: transparent;
     width: 100%;
@@ -78,102 +118,141 @@ ul.nav.nav-tabs li.nav-item a.nav-link:hover {
     border-radius: 5px;
     perspective: 1000px;
     margin: 0 auto;
-  }
+}
 
-
-  .flip-card-inner {
+.flip-card-inner {
     position: relative;
     width: 100%;
     height: 100%;
     text-align: center;
     transition: transform 0.8s;
     transform-style: preserve-3d;
-  }
+}
 
-  .flip-card:hover .flip-card-inner {
+.flip-card:hover .flip-card-inner {
     transform: rotateY(180deg);
-  }
+}
 
-  .flip-card-front, .flip-card-back {
+.flip-card-front, .flip-card-back {
     position: absolute;
     width: 100%;
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     background-color: #3fd9d1;
-  }
+}
 
-  .flip-card-front {
+.flip-card-front {
     background-color: #bbb;
     color: black;
-  }
+}
 
-
-  .flip-card-back {
+.flip-card-back {
     background-color: #09b860;
     color: white;
     transform: rotateY(180deg);
-  }
+}
 
-
-  /* Quiz Question Styling */
+/* Quiz Question Styling */
 .question {
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #f4f4f4;
-  border-radius: 8px;
-}
-.question h2 {
-  color: #333;
-  margin-bottom: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
 }
 
-/* Styling Radio Buttons and Answers */
+.question h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Radio Buttons and Answers Styling */
 .question input[type="radio"] {
-  margin-right: 10px;
+    margin-right: 10px;
 }
+
 .question label {
-  display: block;
-  padding: 5px;
-  border-radius: 5px;
-  background-color: #e9e9e9;
-  cursor: pointer;
+    display: block;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #e9e9e9;
+    cursor: pointer;
 }
+
 .question label:hover {
-  background-color: #d9d9d9;
+    background-color: #d9d9d9;
 }
 
 /* Responsive Design Adjustments */
 @media screen and (max-width: 600px) {
-  .question {
-      padding: 5px;
-  }
-  .question h2 {
-      font-size: 16px;
-  }
+    .question {
+        padding: 5px;
+    }
+    .question h2 {
+        font-size: 16px;
+    }
 }
 
 /* Submit Button Enhancement */
 button[type="submit"] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
+
 button[type="submit"]:hover {
-  background-color: #45a049;
+    background-color: #45a049;
 }
 
 /* Feedback Styling for Quiz Results */
 .correct-answer {
-  color: green;
+    color: green;
 }
 .incorrect-answer {
-  color: red;
+    color: red;
 }
 
 ul {
-  list-style-type: none;  /* Removes the bullet points */
+    list-style-type: none;  /* Removes bullet points */
+}
+
+/* New styles for the user profile page */
+.user-profile img.profile-picture {
+  width: 150px; /* Adjust as needed */
+  height: 150px;
+  border-radius: 50%; /* Circular profile picture */
+  object-fit: cover;
+  border: 2px solid #09b860; /* Border color */
+}
+
+.user-profile form {
+  margin-top: 20px;
+}
+
+/* Profile picture styling */
+.profile-picture {
+  width: 150px; /* Adjust size as needed */
+  height: 150px;
+  border-radius: 50%; /* Circular profile picture */
+  object-fit: cover;
+  border: 3px solid #09b860; /* Change the border color as needed */
+  margin-bottom: 10px; /* Space between the picture and the text */
+}
+
+/* Username and score styling */
+.user-info {
+  color: white; /* White text */
+  font-size: 1.5em; /* Larger text */
+  text-align: center; /* Center align */
+  margin-bottom: 5px; /* Space between elements */
+}
+
+/* Ensuring the parent container has a suitable background if needed */
+.parent {
+  background-color: #09b860;
+  padding: 20px;
+  border-radius: 10px;
 }

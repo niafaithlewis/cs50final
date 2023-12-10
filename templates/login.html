@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioBoss</title>
@@ -24,6 +25,13 @@
         </div>
         <button class="btn btn-primary" type="submit">Log In</button>
     </form>
+
+    <script>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            alert("{{ messages[0] }}");
+          {% endif %}
+        {% endwith %}
+    </script>
 </body>
 </html>
-
