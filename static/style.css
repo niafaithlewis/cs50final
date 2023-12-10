@@ -113,3 +113,61 @@ ul.nav.nav-tabs li.nav-item a.nav-link:hover {
     color: white;
     transform: rotateY(180deg);
   }
+
+  /* Quiz Question Styling */
+.question {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+.question h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Styling Radio Buttons and Answers */
+.question input[type="radio"] {
+  margin-right: 10px;
+}
+.question label {
+  display: block;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #e9e9e9;
+  cursor: pointer;
+}
+.question label:hover {
+  background-color: #d9d9d9;
+}
+
+/* Responsive Design Adjustments */
+@media screen and (max-width: 600px) {
+  .question {
+      padding: 5px;
+  }
+  .question h2 {
+      font-size: 16px;
+  }
+}
+
+/* Submit Button Enhancement */
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+/* Feedback Styling for Quiz Results */
+.correct-answer {
+  color: green;
+}
+.incorrect-answer {
+  color: red;
+}

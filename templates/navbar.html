@@ -3,15 +3,23 @@
     <li class="nav-item">
         <a class="nav-link active" href="{{ url_for('index') }}">Home</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" href="{{ url_for('quiz') }}">Quizzes</a>
-    </li>
+    {% if 'user_id' in session %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('user_profile') }}">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('quiz') }}">Quizzes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+        </li>
+    {% endif %}
 </ul>
-
 {% endmacro %}

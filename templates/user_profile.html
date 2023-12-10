@@ -1,0 +1,23 @@
+{% from "navbar.html" import nav_bar %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet" />
+</head>
+<body>
+    <div class="parent">
+        <div class="header">
+            {{ nav_bar() }}
+            <h1>User Profile</h1>
+        </div>
+        <div class="content">
+            <h3>Username: {{ user.username }}</h3>
+            <p>Cumulative Score: {{ user.cumulative_score }}</p>
+            <!-- Add more user details here -->
+        </div>
+    </div>
+</body>
+</html>
