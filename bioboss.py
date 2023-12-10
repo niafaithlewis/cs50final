@@ -58,7 +58,7 @@ def get_quiz_by_id(quiz_id):
 
         for row in rows:
             (
-                qz_id,  # Use a different variable name to avoid confusion with the parameter quiz_id
+                quiz_id,
                 topic,
                 description,
                 question_id,
@@ -102,7 +102,7 @@ def quiz_page(quiz_id):
     # Get details from the database based on quiz_id
     quiz = get_quiz_by_id(quiz_id)
     if quiz:
-        return render_template("quiz_page.html", quiz=quiz)
+        return render_template("quiz_page.html", quiz=quiz, quiz_id=quiz_id)
     else:
         return "Quiz not found."
 
@@ -110,7 +110,7 @@ def quiz_page(quiz_id):
 def user_profile():
     # Ensure user is logged in
     if 'user_id' not in session:
-        return redirect(url_for('login'))
+        return redirect("/login")
 
     user_id = session['user_id']
 
@@ -124,95 +124,123 @@ def user_profile():
     # Render the user profile template with user data
     return render_template("user_profile.html", user=user_data)
 
+
+def insert_user_response(user_id, question_id, answer_id, is_correct):
+    try:
+        db = get_db_connection()
+
+        query = """
+            INSERT INTO users_response (user_id, question_id, answer_id, is_correct)
+            VALUES (?, ?, ?, ?)
+        """
+        result = db.execute(query, (user_id, question_id, answer_id, is_correct))
+
+        response_id = result.lastrowid
+
+        db.commit()
+        db.close()
+
+        print("User response inserted successfully.")
+        return response_id
+    except sqlite3.Error as e:
+        print(f"Error inserting user response: {e}")
+
+
 def get_user_data(user_id):
     db = get_db_connection()
-    user = db.execute("SELECT *, cumulative_score FROM users WHERE user_id = ?", (user_id,)).fetchone()
+    user = db.execute("SELECT score FROM users WHERE user_id = ?", (user_id,)).fetchone()
     db.close()
     return user if user else None
+
+
+# Calculating user's score
+def calculate_user_score(user_id):
+    try:
+        db = get_db_connection()
+        query = """
+            SELECT
+                questions.question_id,
+                answers.answer_id,
+                users_response.is_correct
+            FROM
+                users_response
+            JOIN
+                questions ON users_response.question_id = questions.question_id
+            JOIN
+                answers ON users_response.answer_id = answers.answer_id
+            WHERE
+                users_response.user_id = ?
+        """
+        rows = db.execute(query, (user_id,)).fetchall()
+
+        score = 0
+
+        for row in rows:
+            is_correct = row['is_correct']
+            score += 1 if is_correct else 0
+
+
+        update_query = "UPDATE users SET score = ? WHERE user_id = ?"
+        db.execute(update_query, (score, user_id))
+        db.commit()
+
+        db.close()
+        return score
+    except sqlite3.Error as e:
+        print(f"Error calculating user's score: {e}")
+        return None
+
+def check_answer(question_id, answer_id):
+    db = get_db_connection()
+    query = "SELECT is_correct FROM answers WHERE question_id = ? AND answer_id = ?"
+    correct_answer = db.execute(query, (question_id, answer_id)).fetchone()
+
+    return correct_answer['is_correct'] if correct_answer else False
+
 
 @app.route("/submit_quiz/<int:quiz_id>", methods=["POST"])
 def submit_quiz(quiz_id):
     # Assume user_id is stored in session
-    user_id = session["user_id"]
+    if 'user_id' in session:
+        user_id = session['user_id']
 
-    # Retrieve user's answers from the form submission
-    user_answers = request.form.to_dict()
+        quiz = get_quiz_by_id(quiz_id)
 
-    # Get correct answers from the database
-    correct_answers = get_correct_answers(quiz_id)
+        # Check if the user has attempted a quiz before
+        last_attempted_quiz_id = session.get('last_attempted_quiz_id')
 
-    # Calculate score for the current quiz and track results
-    score = 0
-    user_results = {}  # Store question results
+        if last_attempted_quiz_id is not None and last_attempted_quiz_id != quiz_id:
+            # Reset the user's score to zero if they are attempting a new quiz
+            reset_user_score(user_id)
 
-    for question_id, user_answer in user_answers.items():
-        if correct_answers.get(question_id) == user_answer:
-            score += 1
-            user_results[question_id] = {'user_answer': user_answer, 'correct': True}
-        else:
-            user_results[question_id] = {'user_answer': user_answer, 'correct': False}
+        # Update the last attempted quiz_id in the session
+        session['last_attempted_quiz_id'] = quiz_id
 
+        user_responses = {}
+        for question in quiz['questions']:
+            answer_id = int(request.form.get(f"answer_for_question_{question['question_id']}", -1))
+
+            is_correct = check_answer(question['question_id'], answer_id)
+
+            response_id = insert_user_response(user_id, question['question_id'], answer_id, is_correct)
+
+            user_responses[question['question_id']] = {
+                'response_id': response_id,
+                'user_answer': answer_id,
+                'is_correct': is_correct
+            }
+
+        score = calculate_user_score(user_id)
+        return render_template("submit_quiz.html", quiz_id=quiz_id, user_id=user_id, score=score, user_responses=user_responses)
+    else:
+        return redirect("/login")
+
+def reset_user_score(user_id):
+    print("Resetting user score...")
     db = get_db_connection()
-    # Store the score in the database and update cumulative score
-    user = db.execute("SELECT cumulative_score FROM users WHERE user_id = ?", (user_id,)).fetchone()
-    current_cumulative_score = user["cumulative_score"] if user else 0
-
-    new_cumulative_score = current_cumulative_score + score
-    db.execute("UPDATE users SET cumulative_score = ? WHERE user_id = ?", (new_cumulative_score, user_id))
-    db.execute("INSERT INTO quiz_results (user_id, quiz_id, score) VALUES (?, ?, ?)", (user_id, quiz_id, score))
-    db.commit()
-
-    # Fetch detailed question and answer information
-    detailed_results = get_detailed_results(quiz_id, user_results)
-
+    db.execute("UPDATE users SET score = 0 WHERE user_id = ?", (user_id,))
     db.close()
-
-    # Redirect to a results page with detailed results
-    return render_template("quiz_results.html", score=score, results=detailed_results)
-
-def get_correct_answers(quiz_id):
-    db = get_db_connection()
-    try:
-        query = """
-            SELECT
-                questions.question_id,
-                answers.answer_id
-            FROM
-                answers
-            JOIN
-                questions ON answers.question_id = questions.question_id
-            WHERE
-                questions.quiz_id = ? AND answers.is_correct = 1
-        """
-        rows = db.execute(query, (quiz_id,)).fetchall()
-        correct_answers = {str(row['question_id']): str(row['answer_id']) for row in rows}
-        return correct_answers
-    except sqlite3.Error as e:
-        print(f"Error fetching correct answers for quiz ID {quiz_id}: {e}")
-        return {}
-    finally:
-        db.close()
-
-
-def get_detailed_results(quiz_id, user_results):
-    db = get_db_connection()
-    detailed_results = []
-    for question_id, result in user_results.items():
-        question = db.execute("SELECT question_text FROM questions WHERE question_id = ?", (question_id,)).fetchone()
-        correct_answer = db.execute("SELECT answer_text FROM answers WHERE question_id = ? AND is_correct = 1", (question_id,)).fetchone()
-        user_answer_text = db.execute("SELECT answer_text FROM answers WHERE answer_id = ?", (result['user_answer'],)).fetchone()
-
-        if question and correct_answer and user_answer_text:
-            detailed_results.append({
-                'question': question['question_text'],
-                'correct_answer': correct_answer['answer_text'],
-                'user_answer': user_answer_text['answer_text'],
-                'is_correct': result['correct']
-            })
-        else:
-            print(f"Error: Missing data for question_id {question_id}")
-    db.close()
-    return detailed_results
+    print("User score reset successfully.")
 
 
 @app.route("/register", methods=["GET", "POST"])
