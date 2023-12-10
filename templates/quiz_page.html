@@ -1,3 +1,6 @@
+{% from "navbar.html" import nav_bar %}
+<!--Dynamic Quiz page for all Quizzes-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,31 +12,27 @@
 <body>
     <div class="parent">
         <div class="header">
-            {% from "navbar.html" import nav_bar %}
             {{ nav_bar() }}
-            <h1>{{ quiz.topic }}</h1>
+           <h1>{{ quiz.topic }}</h1>
         </div>
-        <p>{{ quiz.description }}</p>
-
-        <!-- Form starts here -->
-        <form action="{{ url_for('submit_quiz', quiz_id=quiz.quiz_id) }}" method="post">
-            <!-- Loop through questions in database -->
-            {% for question in quiz['questions'] %}
-                <div class="question">
-                    <h2>{{ loop.index }}. {{ question['question_text'] }}</h2>
-                    <ul>
-                        {% for answer in question['answers'] %}
-                            <li>
-                                <input type="radio" name="{{ question['question_id'] }}" value="{{ answer['answer_id'] }}">
-                                <label for="answer_{{ answer['answer_id'] }}">{{ answer['answer_text'] }}</label>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endfor %}
-            <button type="submit">Submit</button>
-        </form>
-        <!-- Form ends here -->
     </div>
+    <p>{{ quiz.description }}</p>
+
+    <form method="POST" action="{{ url_for ('submit_quiz', quiz_id=quiz_id) }}">
+        {% for question in quiz['questions'] %}
+            <div class="question">
+                <h2>{{ question['question_text'] }}</h2>
+                <ul>
+                    {% for answer in question['answers'] %}
+                        <li>
+                            <input type="radio" name="answer_for_question_{{ question['question_id'] }}" value="{{ answer.answer_id }}">
+                            {{ answer['answer_text'] }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+        <button type="submit">Submit Answers</button>
+    </form>
 </body>
 </html>
