@@ -29,28 +29,49 @@
             <div class="flip-card">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
-                        <img src="pollen.jpg" class="responsive-image">
+                        <img src="/static/geology.png" class="responsive-image">
                     </div>
                     <div class="flip-card-back">
                         <p>
-                            Plant Structure
+                            Minerals
                         </p>
                         <p>
-                            Photosynthesis
+                            Rock Classifications
                         </p>
                         <p>
-                            Cellular Respiration
+                            Volcanoes
                         </p>
                     </div>
                 </div>
             </div>
-            <a href="{{ url_for('quiz_page', quiz_id=1) }}">Geology Quiz!</a>
+            <a href="{{ url_for('quiz_page', quiz_id=1) }}">Geology</a>
         </div>
         <div class="quiz-module">
             <div class="flip-card">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
-                        <img src="pollen.jpg" class="responsive-image">
+                        <img src="/static/genetics.png" class="responsive-image">
+                    </div>
+                    <div class="flip-card-back">
+                        <p>
+                            DNA structure
+                        </p>
+                        <p>
+                            Laws of Genetics
+                        </p>
+                        <p>
+                            Heritability
+                        </p>
+                    </div>
+                </div>
+                <a href="{{ url_for('quiz_page', quiz_id=2) }}">Genetics</a>
+            </div>
+        </div>
+        <div class="quiz-module">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="/static/plants.png" class="responsive-image">
                     </div>
                     <div class="flip-card-back">
                         <p>
@@ -64,9 +85,13 @@
                         </p>
                     </div>
                 </div>
-                <a href="{{ url_for('quiz_page', quiz_id=2) }}">Genetics Quiz!</a>
             </div>
+            <a href="{{ url_for('quiz_page', quiz_id=3) }}">Plants</a>
         </div>
+
+
+
     </div>
 
 </body>
+
